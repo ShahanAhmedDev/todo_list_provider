@@ -1,29 +1,46 @@
 import 'package:flutter/material.dart';
+import 'package:todo_list_provider/model/tasks.dart';
 import 'package:todo_list_provider/screens/widgets/tasks_list.dart';
 
 import 'add_task_screen.dart';
 
-class TaskScreen extends StatelessWidget {
-  const TaskScreen({Key? key}) : super(key: key);
+class TaskScreen extends StatefulWidget {
+
+  TaskScreen({Key? key}) : super(key: key);
+
+  @override
+  State<TaskScreen> createState() => _TaskScreenState();
+}
+
+class _TaskScreenState extends State<TaskScreen> {
+  List<Task> tasks = [
+    Task(name: "Doodh khareedna hai"),
+    Task(name: "Andy bhi"),
+    Task(name: "3 Circle Rocks"),
+  ];
 
   // Widget buildBottomSheet(BuildContext context){
-  //   return Container(
-  //     child: const Center(
-  //       child: Text('Test'
-  //       ),
-  //     )
-  //   );
-  // }
-
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
     return Scaffold(
-      floatingActionButton: FloatingActionButton(onPressed: (){
-        showModalBottomSheet(context: context, builder: (context) => AddTaskScreen());
-      },
-      backgroundColor: Colors.lightBlueAccent,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          showModalBottomSheet(
+            context: context,
+            builder: (context) => AddTaskScreen(
+                addTaskCallback: (newTask){
+                  print(newTask);
+                  setState(() {
+                    tasks.add(Task(name: newTask));
+                  });
+                  Navigator.pop(context);
+                }
+            ),
+          );
+        },
+        backgroundColor: Colors.lightBlueAccent,
         child: const Icon(Icons.add),
       ),
       backgroundColor: Colors.lightBlueAccent,
@@ -58,8 +75,8 @@ class TaskScreen extends StatelessWidget {
                       fontWeight: FontWeight.w700,
                       color: Colors.white),
                 ),
-                const Text(
-                  '12 Tasks',
+                Text(
+                  '${tasks.length} Tasks',
                   style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w500,
@@ -78,7 +95,9 @@ class TaskScreen extends StatelessWidget {
                 ),
                 color: Colors.white,
               ),
-              child: TasksList(),
+              child: TasksList(
+                taskList: tasks,
+              ),
             ),
           ),
         ],
@@ -90,5 +109,3 @@ class TaskScreen extends StatelessWidget {
     );
   }
 }
-
-
