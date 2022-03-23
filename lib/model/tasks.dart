@@ -1,5 +1,4 @@
 class Task{
-
   final String name;
   var isDone;
   Task({required this.name, this.isDone = false});

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:todo_list_provider/model/tasks.dart';
+import 'package:todo_list_provider/provider/provider.dart';
 import 'package:todo_list_provider/screens/widgets/tasks_list.dart';
 
 import 'add_task_screen.dart';
@@ -13,11 +15,7 @@ class TaskScreen extends StatefulWidget {
 }
 
 class _TaskScreenState extends State<TaskScreen> {
-  List<Task> tasks = [
-    Task(name: "Doodh khareedna hai"),
-    Task(name: "Andy bhi"),
-    Task(name: "3 Circle Rocks"),
-  ];
+  // var tasks = ChangeNotifierProvider(create: (context) => NewTask());
 
   // Widget buildBottomSheet(BuildContext context){
   @override
@@ -33,7 +31,8 @@ class _TaskScreenState extends State<TaskScreen> {
                 addTaskCallback: (newTask){
                   print(newTask);
                   setState(() {
-                    tasks.add(Task(name: newTask));
+                    // tasks.add(Task(name: newTask));
+                    Provider.of<NewTask>(context,listen: false).addTask(Task(name: newTask));
                   });
                   Navigator.pop(context);
                 }
@@ -76,7 +75,7 @@ class _TaskScreenState extends State<TaskScreen> {
                       color: Colors.white),
                 ),
                 Text(
-                  '${tasks.length} Tasks',
+                  '${Provider.of<NewTask>(context).tasks.length} Tasks',
                   style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w500,
@@ -96,7 +95,7 @@ class _TaskScreenState extends State<TaskScreen> {
                 color: Colors.white,
               ),
               child: TasksList(
-                taskList: tasks,
+                // taskList: Provider.of<NewTask>(context).tasks,
               ),
             ),
           ),

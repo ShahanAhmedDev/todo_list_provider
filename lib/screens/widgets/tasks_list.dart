@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:todo_list_provider/model/tasks.dart';
+import 'package:todo_list_provider/provider/provider.dart';
 import 'package:todo_list_provider/screens/widgets/tasks_tile.dart';
 
 class TasksList extends StatefulWidget {
 
-  final List<Task> taskList;
+  // final List<Task> taskList;
 
-  TasksList({Key? key, required this.taskList}) : super(key: key);
+  TasksList({Key? key}) : super(key: key);
   @override
   State<TasksList> createState() => _TasksListState();
 }
@@ -20,15 +22,18 @@ class _TasksListState extends State<TasksList> {
 
   @override
   Widget build(BuildContext context) {
+    // var taskList = ChangeNotifierProvider(create: (context) => NewTask());
+    var taskList = Provider.of<NewTask>(context).tasks;
+
     return ListView.builder(
-      itemCount: widget.taskList.length,
+      itemCount: taskList.length,
       itemBuilder: (context, index) {
         return TaskTile(
-            isChecked: widget.taskList[index].isDone, taskTitle: widget.taskList[index].name,
+            isChecked: taskList[index].isDone, taskTitle: taskList[index].name,
             checkboxCallBack:
                 (checkboxState){
               setState(() {
-                widget.taskList[index].toggleDone();
+                taskList[index].toggleDone();
               });
             }
         );
@@ -36,3 +41,24 @@ class _TasksListState extends State<TasksList> {
     );
   }
 }
+
+
+// Widget build(BuildContext context) {
+//   // var taskList = ChangeNotifierProvider(create: (context) => NewTask());
+//   var taskList = Provider.of<NewTask>(context).tasks;
+//
+//   return ListView.builder(
+//     itemCount: widget.taskList.length,
+//     itemBuilder: (context, index) {
+//       return TaskTile(
+//           isChecked: widget.taskList[index].isDone, taskTitle: widget.taskList[index].name,
+//           checkboxCallBack:
+//               (checkboxState){
+//             setState(() {
+//               widget.taskList[index].toggleDone();
+//             });
+//           }
+//       );
+//     },
+//   );
+// }
